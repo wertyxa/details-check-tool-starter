@@ -18,6 +18,14 @@
         <java.version>24</java.version>
     </properties>
 
+    <!-- JitPack репозиторій -->
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <!-- Додаємо starter для веб додатку -->
         <dependency>
@@ -25,11 +33,11 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         
-        <!-- Додаємо наш власний стартер -->
+        <!-- Додаємо наш власний стартер через JitPack -->
         <dependency>
-            <groupId>ua.wertyxa</groupId>
-            <artifactId>details-check-tool-spring-boot-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
+            <groupId>com.github.wertyxa</groupId>
+            <artifactId>details-check-tool-starter</artifactId>
+            <version>main-SNAPSHOT</version> <!-- Можна замінити на tag версії, напр. v1.0.0 -->
         </dependency>
         
         <!-- Lombok для зменшення бойлерплейту -->
