@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: details-check-example
+
+# Налаштування стартера для перевірки банківських деталей
+details:
+  check:
+    card-check-url: https://decode.org.ua/card
+    timeout: 10000
+    enable-detailed-logs: true
+
+# Налаштування логування
+logging:
+  level:
+    ua.wertyxa: DEBUG

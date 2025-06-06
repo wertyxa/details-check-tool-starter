@@ -1,0 +1,37 @@
+{
+  "properties": [
+    {
+      "name": "details.check.card-check-url",
+      "type": "java.lang.String",
+      "description": "URL для перевірки банківських карток.",
+      "defaultValue": "https://decode.org.ua/card"
+    },
+    {
+      "name": "details.check.timeout",
+      "type": "java.lang.Integer",
+      "description": "Максимальний час очікування відповіді від сервісу (в мілісекундах).",
+      "defaultValue": 5000
+    },
+    {
+      "name": "details.check.enable-detailed-logs",
+      "type": "java.lang.Boolean",
+      "description": "Увімкнути/вимкнути логування деталей запитів.",
+      "defaultValue": false
+    }
+  ],
+  "hints": [
+    {
+      "name": "details.check.enable-detailed-logs",
+      "values": [
+        {
+          "value": true,
+          "description": "Увімкнути детальне логування."
+        },
+        {
+          "value": false,
+          "description": "Вимкнути детальне логування."
+        }
+      ]
+    }
+  ]
+}
