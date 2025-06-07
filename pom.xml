@@ -10,9 +10,9 @@
     </parent>
     <groupId>ua.wertyxa</groupId>
     <artifactId>details-check-tool-spring-boot-starter</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>v1.1</version>
     <name>details-check-tool-spring-boot-starter</name>
-    <description>Spring Boot Starter для перевірки банківських деталей (карток та IBAN)</description>
+    <description>Spring Boot Starter for checking bank details (cards and IBAN)</description>
 
     <properties>
         <java.version>24</java.version>

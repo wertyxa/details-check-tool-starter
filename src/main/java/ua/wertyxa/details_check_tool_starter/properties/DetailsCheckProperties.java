@@ -4,24 +4,19 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * Властивості для налаштування сервісу перевірки банківських деталей
+ * Properties for configuring the bank details check service
  */
 @Data
 @ConfigurationProperties(prefix = "details.check")
 public class DetailsCheckProperties {
     
     /**
-     * URL для перевірки банківських карток
-     */
-    private String cardCheckUrl = "https://decode.org.ua/card";
-    
-    /**
-     * Максимальний час очікування відповіді від сервісу (в мілісекундах)
+     * Maximum time to wait for a response from the service (in milliseconds)
      */
     private int timeout = 5000;
     
     /**
-     * Увімкнути/вимкнути логування деталей запитів
+     * Enable or disable detailed logging of request details
      */
     private boolean enableDetailedLogs = false;
 }

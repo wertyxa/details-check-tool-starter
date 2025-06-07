@@ -5,6 +5,7 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
@@ -15,22 +16,31 @@ import ua.wertyxa.details_check_tool_starter.properties.DetailsCheckProperties;
 import java.util.logging.Logger;
 
 /**
- * Сервіс для перевірки банківських деталей (картки та IBAN)
+ * Service for checking bank details (card and IBAN)
  */
 public class DetailsCheckService {
     private final RestClient restClient;
-    private final DetailsCheckProperties properties;
     private static final Logger logger = Logger.getLogger(DetailsCheckService.class.getName());
 
     public DetailsCheckService(DetailsCheckProperties properties) {
-        this.properties = properties;
-        this.restClient = RestClient.builder().build();
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(properties.getTimeout());
+        requestFactory.setReadTimeout(properties.getTimeout());
+        
+        this.restClient = RestClient.builder()
+                .baseUrl("https://decode.org.ua/card")
+                .requestFactory(requestFactory)
+                .build();
+        
+        if (properties.isEnableDetailedLogs()) {
+            logger.info("DetailsCheckService created with timeout: " + properties.getTimeout() + " ms");
+        }
     }
 
     /**
-     * Перевірка номеру банківської картки
-     * @param cardNumber номер картки для перевірки
-     * @return результат перевірки
+     * Check the bank card number
+     * @param cardNumber the card number to check
+     * @return the check result
      */
     public CardCheckResult checkCard(String cardNumber) {
         // Перевірка вхідних даних
@@ -59,13 +69,9 @@ public class DetailsCheckService {
         CardCheckResult result = new CardCheckResult();
 
         try {
-            // Використовуємо URL із конфігурації або за замовчуванням
-            String cardCheckUrl = properties.getCardCheckUrl() != null ? 
-                properties.getCardCheckUrl() : "https://decode.org.ua/card";
-            
+
             // Виконуємо POST запит
             String htmlResponse = restClient.post()
-                    .uri(cardCheckUrl)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .body(formData)
                     .retrieve()
@@ -84,9 +90,9 @@ public class DetailsCheckService {
     }
 
     /**
-     * Перевірка IBAN
-     * @param iban IBAN для перевірки
-     * @return результат перевірки
+     * Check the IBAN
+     * @param iban IBAN to check
+     * @return the check result
      */
     public IbanCheckResult checkIban(String iban) {
         IbanCheckResult result = new IbanCheckResult();
@@ -123,11 +129,11 @@ public class DetailsCheckService {
     }
     
     /**
-     * Перевіряє контрольну суму IBAN за стандартним алгоритмом
-     * 1. Перемістити перші 4 символи в кінець рядка
-     * 2. Замінити всі літери на цифри (A=10, B=11, ..., Z=35)
-     * 3. Розглянути отриманий рядок як велике ціле число та обчислити залишок від ділення на 97
-     * 4. Якщо залишок дорівнює 1, то IBAN валідний
+     * Validates the IBAN checksum using the standard algorithm
+     * 1. Move the first 4 characters to the end of the string
+     * 2. Replace all letters with numbers (A=10, B=11, ..., Z=35)
+     * 3. Consider the resulting string as a large integer and calculate the remainder of the division by 97
+     * 4. If the remainder is 1, the IBAN is valid
      */
     private boolean validateIbanChecksum(String iban) {
         // Переміщення перших 4 символів в кінець
@@ -158,8 +164,8 @@ public class DetailsCheckService {
     }
 
     /**
-     * Перевіряє чи довжина номера картки відповідає стандартам
-     * (більшість карток мають 13-19 цифр)
+     * Checks if the length of the card number conforms to the standards
+     * (most cards have 13-19 digits)
      */
     private boolean isValidCardNumberLength(String cardNumber) {
         int length = cardNumber.length();
@@ -167,7 +173,7 @@ public class DetailsCheckService {
     }
 
     /**
-     * Парсить HTML-відповідь і заповнює об'єкт результату
+     * Parses the HTML response and populates the result object
      */
     private void parseCardResponse(String htmlResponse, CardCheckResult result) {
         try {
@@ -222,8 +228,8 @@ public class DetailsCheckService {
                 }
             }
         } catch (Exception e) {
-            logger.severe("Помилка при парсингу HTML: " + e.getMessage());
-            result.setMessage("Помилка при обробці відповіді: " + e.getMessage());
+            logger.severe("Error parsing HTML: " + e.getMessage());
+            result.setMessage("Error processing response: " + e.getMessage());
         }
     }
 }

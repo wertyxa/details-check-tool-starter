@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Результат перевірки IBAN
+ * Result of IBAN check
  */
 @Data
 @NoArgsConstructor

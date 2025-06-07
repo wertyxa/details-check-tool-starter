@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * Результат перевірки банківської картки
+ * Result of checking a bank card
  */
 @Data
 @NoArgsConstructor

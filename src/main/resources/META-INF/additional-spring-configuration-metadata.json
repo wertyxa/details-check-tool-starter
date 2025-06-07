@@ -1,12 +1,6 @@
 {
   "properties": [
     {
-      "name": "details.check.card-check-url",
-      "type": "java.lang.String",
-      "description": "URL для перевірки банківських карток.",
-      "defaultValue": "https://decode.org.ua/card"
-    },
-    {
       "name": "details.check.timeout",
       "type": "java.lang.Integer",
       "description": "Максимальний час очікування відповіді від сервісу (в мілісекундах).",
