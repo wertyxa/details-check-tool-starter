@@ -5,7 +5,6 @@ spring:
 # Налаштування стартера для перевірки банківських деталей
 details:
   check:
-    card-check-url: https://decode.org.ua/card
     timeout: 10000
     enable-detailed-logs: true
 
